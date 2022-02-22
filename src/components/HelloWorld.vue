@@ -1,13 +1,8 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-
-defineProps<{ msg: string }>()
-
-const count = ref(0)
-</script>
-
 <template>
-  <h1>{{ msg }}</h1>
+  <div class="container">
+    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam et, illum voluptatum itaque odio alias ad! Minus illum, amet soluta totam facilis ducimus laboriosam error. Obcaecati dicta saepe quod ratione quam tempora optio, maxime voluptatibus incidunt assumenda corporis accusantium harum beatae cupiditate autem, natus tempore facilis et laudantium? Iure ratione debitis, earum, expedita ipsam impedit, eligendi odio delectus magni officia dicta sequi nulla quasi eius tempora. Distinctio, similique hic autem id fugit temporibus natus saepe corrupti, tenetur fugiat labore! Libero dignissimos vel quibusdam tempora at totam et vitae hic nesciunt corrupti, facilis, dicta voluptatibus assumenda reiciendis magni dolorem doloribus nihil.
+  </div>
+  <h1 class="text-base bg-red-200 hover:text-gray-600 transition-color">{{ msg }}</h1>
 
   <p>
     Recommended IDE setup:
@@ -33,20 +28,13 @@ const count = ref(0)
   </p>
 </template>
 
+<script setup lang="ts">
+import { ref } from 'vue'
+
+defineProps<{ msg: string }>()
+
+const count = ref(0)
+</script>
+
 <style scoped>
-a {
-  color: #42b983;
-}
-
-label {
-  margin: 0 0.5em;
-  font-weight: bold;
-}
-
-code {
-  background-color: #eee;
-  padding: 2px 4px;
-  border-radius: 4px;
-  color: #304455;
-}
 </style>
