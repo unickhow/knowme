@@ -1,8 +1,12 @@
 <template>
   <main id="card-generator">
     <div class="container max-w-[800px] min-h-100vh mx-auto shadow-xl px-6 py-4">
-      <h1 class="mb-2">Hail Anurag !</h1>
-      <p class="mt-0 mb-8">Inspired by <a href="https://github.com/anuraghazra/github-readme-stats" target="_blank">github-readme-stats</a></p>
+      <h1 class="mb-2">knowme</h1>
+      <p class="mt-0 mb-8 text-gray-500 flex flex-wrap items-center">A readme cards generator, inspired by
+        <a class="inline-flex items-center px-2 visited:text-current" href="https://github.com/anuraghazra/github-readme-stats" target="_blank">
+          <zmdiGithubBox class="mr-1" />github-readme-stats
+        </a>
+      </p>
 
       <div class="field-group field--username">
         <legend class="mb-4 -ml-3 font-bold flex text-xl tracking-wide">
@@ -98,6 +102,7 @@ import mdiDrawPen from '~icons/mdi/draw-pen';
 import lucideCopy from '~icons/lucide/copy';
 import mdiClipboardCheckOutline from '~icons/mdi/clipboard-check-outline';
 import fluentArrowReset24Filled from '~icons/fluent/arrow-reset-24-filled';
+import zmdiGithubBox from '~icons/zmdi/github-box';
 import { useThrottleFn, useClipboard } from '@vueuse/core'
 
 const username = ref('')
