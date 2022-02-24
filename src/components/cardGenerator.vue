@@ -47,6 +47,22 @@
           </label>
         </div>
       </div>
+      <div class="field-group field--customization">
+        <legend class="mb-4 -ml-3 font-bold flex text-xl tracking-wide">
+          <mdiDrawPen class="mr-2 text-[#F19F19]" />
+          Customization
+        </legend>
+        <div v-for="(prop, key) in customization" :key="key" class="mb-2">
+          <label class="cursor-pointer text-gray-600 inline-flex items-center">
+            <input
+              type="checkbox"
+              class="mr-2"
+              v-model="prop.isChecked">
+            <span>{{ key }}</span>
+            <input type="color" class="ml-2" v-model="prop.hex">
+          </label>
+        </div>
+      </div>
 
       <div class="bg-gray-100 rounded p-4 my-8 break-all">
         <legend class="mb-2 font-bold">Preview</legend>
@@ -105,16 +121,53 @@ const initFlags = () => ({
 })
 const boolFlags = ref(initFlags())
 
+const initCustomize = () => ({
+  title_color: {
+    isChecked: false,
+    hex: '#000000'
+  },
+  text_color: {
+    isChecked: false,
+    hex: '#000000'
+  },
+  icon_color: {
+    isChecked: false,
+    hex: '#000000'
+  },
+  border_color: {
+    isChecked: false,
+    hex: '#000000'
+  },
+  bg_color: {
+    isChecked: false,
+    hex: '#000000'
+  }
+})
+const customization = ref(initCustomize())
+
 const allQueries:string = computed(() => {
+  // username
   let str: string[] = [`username=${username.value}`]
+
+  // hide stats
   if (hidingStats.value.length) {
     str.push(`hide=${hidingStats.value.join(',')}`)
   }
+
+  // other flags
   for (const [key, value] of Object.entries(boolFlags.value)) {
     if (value) {
       str.push(`${key}=true`)
     }
   }
+
+  // customization
+  for (const [key, prop] of Object.entries(customization.value)) {
+    if (prop.isChecked) {
+      str.push(`${key}=${prop.hex.substr(1)}`)
+    }
+  }
+
   return str.join('&')
 })
 
@@ -138,6 +191,7 @@ const handleReset = () => {
   username.value = ''
   hidingStats.value = []
   boolFlags.value = initFlags()
+  customization.value = initCustomize()
 }
 </script>
 
