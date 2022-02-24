@@ -59,10 +59,16 @@
         </div>
       </div>
 
-      <button class="is-btn flex items-center mx-auto" :disabled="!username" @click="handleGenerate">
-        <mdiCardAccountDetailsStarOutline class="mr-2" />
-        <span>Generate</span>
-      </button>
+      <div class="flex items-center justify-center">
+        <button class="is-btn flex items-center mr-4 disabled:pointer-events-none" :disabled="!username" @click="handleGenerate">
+          <mdiCardAccountDetailsStarOutline class="mr-2" />
+          <span>Generate</span>
+        </button>
+        <button class="is-btn flex items-center" @click="handleReset">
+          <fluentArrowReset24Filled class="mr-2" />
+          <span>Reset</span>
+        </button>
+      </div>
       <div class="my-8 text-center">
         <img class="max-w-full" :src="imgSrc" alt="">
       </div>
@@ -75,6 +81,7 @@ import mdiCardAccountDetailsStarOutline from '~icons/mdi/card-account-details-st
 import mdiDrawPen from '~icons/mdi/draw-pen';
 import lucideCopy from '~icons/lucide/copy';
 import mdiClipboardCheckOutline from '~icons/mdi/clipboard-check-outline';
+import fluentArrowReset24Filled from '~icons/fluent/arrow-reset-24-filled';
 import { useThrottleFn, useClipboard } from '@vueuse/core'
 
 const username = ref('')
@@ -88,7 +95,7 @@ enum Stats {
 }
 const hidingStats = ref([])
 
-const boolFlags = ref({
+const initFlags = () => ({
   count_private: false,
   show_icons: false,
   hide_title: false,
@@ -96,6 +103,7 @@ const boolFlags = ref({
   include_all_commits: false,
   disable_animations: false
 })
+const boolFlags = ref(initFlags())
 
 const allQueries:string = computed(() => {
   let str: string[] = [`username=${username.value}`]
@@ -125,6 +133,12 @@ const handleGenerate = useThrottleFn(() => {
   if (!username.value) return false
   imgSrc.value = assembledApi.value
 }, 1000, false)
+
+const handleReset = () => { 
+  username.value = ''
+  hidingStats.value = []
+  boolFlags.value = initFlags()
+}
 </script>
 
 <style scoped>
