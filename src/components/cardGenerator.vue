@@ -48,9 +48,15 @@
         </div>
       </div>
 
-      <div class="bg-gray-100 rounded p-4 mb-4 break-all">
-        <legend class="mb-2 font-bold">Preview: </legend>
-        <code>{{ assembledApi }}</code>
+      <div class="bg-gray-100 rounded p-4 my-8 break-all">
+        <legend class="mb-2 font-bold">Preview</legend>
+        <div class="flex">
+          <code class="mr-4 leading-normal">{{ assembledApi }}</code>
+          <button class="border-none p-1 bg-transparent ml-auto text-gray-400 cursor-pointer hover:text-gray-600" @click="handleCopyMd">
+            <lucideCopy v-show="!copied" />
+            <mdiClipboardCheckOutline v-show="copied" class="color-[#F19F19]" />
+          </button>
+        </div>
       </div>
 
       <button class="is-btn flex items-center mx-auto" :disabled="!username" @click="handleGenerate">
@@ -67,7 +73,9 @@
 <script lang="ts" setup>
 import mdiCardAccountDetailsStarOutline from '~icons/mdi/card-account-details-star-outline';
 import mdiDrawPen from '~icons/mdi/draw-pen';
-import { useThrottleFn } from '@vueuse/core'
+import lucideCopy from '~icons/lucide/copy';
+import mdiClipboardCheckOutline from '~icons/mdi/clipboard-check-outline';
+import { useThrottleFn, useClipboard } from '@vueuse/core'
 
 const username = ref('')
 
@@ -101,8 +109,16 @@ const allQueries:string = computed(() => {
   }
   return str.join('&')
 })
-// [![${form.username}'s GitHub stats](https://github-readme-stats.vercel.app/api?${allQueries.value})](https://github.com/anuraghazra/github-readme-stats)
+
 const assembledApi = computed(() => `https://github-readme-stats.vercel.app/api?${allQueries.value}`)
+const fullMd = computed(() => `[![${username.value}'s GitHub stats](${assembledApi.value})](https://github.com/anuraghazra/github-readme-stats)`)
+const { copy, copied, isSupported } = useClipboard({ source: fullMd })
+const handleCopyMd = () => {
+  if (isSupported) {
+    copy()
+    return
+  }
+}
 
 const imgSrc = ref('')
 const handleGenerate = useThrottleFn(() => {
