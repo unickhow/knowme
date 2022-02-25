@@ -1,12 +1,13 @@
 <template>
   <main id="card-generator">
     <div class="container max-w-[800px] min-h-100vh mx-auto shadow-xl px-6 py-4">
-      <h1 class="mb-2">knowme</h1>
-      <p class="mt-0 mb-8 text-gray-500 flex flex-wrap items-center">A readme cards generator, inspired by
-        <a class="inline-flex items-center px-2 visited:text-current" href="https://github.com/anuraghazra/github-readme-stats" target="_blank">
-          <zmdiGithubBox class="mr-1" />github-readme-stats
-        </a>
-      </p>
+      <div class="kv mb-8">
+        <h1 class="mb-2">knowme</h1>
+        <p class="m-0 text-gray-900 text-sm flex flex-wrap items-center">A readme cards generator, inspired by
+          <a class="inline-flex items-center px-2 visited:text-current" href="https://github.com/anuraghazra/github-readme-stats" target="_blank">github-readme-stats</a>
+        </p>
+        <i class="text-sm text-gray-500">better UI, Repo card, and Language card are WIP.</i>
+      </div>
 
       <div class="field-group field--username">
         <legend class="mb-4 -ml-3 font-bold flex text-xl tracking-wide">
@@ -91,6 +92,12 @@
       </div>
       <div class="my-8 text-center">
         <img class="max-w-full" :src="imgSrc" alt="">
+      </div>
+
+      <div class="text-center">
+        <a class="p-1 opacity-50 color-[#1d1d1d] hover:opacity-100 transition-opacity" href="https://github.com/unickhow" target="_blank">
+          <zmdiGithubBox />
+        </a>
       </div>
     </div>
   </main>
@@ -186,7 +193,7 @@ const handleCopyMd = () => {
   }
 }
 
-const imgSrc = ref('')
+const imgSrc = ref('https://via.placeholder.com/495x195.png?text=check+your+username')
 const handleGenerate = useThrottleFn(() => {
   if (!username.value) return false
   imgSrc.value = assembledApi.value
