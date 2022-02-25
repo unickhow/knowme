@@ -11,6 +11,10 @@
     "@vueuse/core": "^7.6.2",
     "vue": "^3.2.25"
   },
+  "author": {
+    "name": "uNickHow",
+    "email": "unick.zhow@gmail.com"
+  },
   "devDependencies": {
     "@iconify/json": "^2.1.4",
     "@unocss/core": "^0.26.2",
