@@ -150,7 +150,7 @@ const initCustomize = () => ({
 })
 const customization = ref(initCustomize())
 
-const allQueries:string = computed(() => {
+const allQueries = computed(() => {
   // username
   let str: string[] = [`username=${username.value}`]
 
