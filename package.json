@@ -26,6 +26,7 @@
     "unplugin-auto-import": "^0.6.1",
     "unplugin-icons": "^0.13.2",
     "vite": "^2.8.0",
+    "vite-plugin-fonts": "^0.2.2",
     "vue-tsc": "^0.29.8"
   }
 }

@@ -12,6 +12,7 @@ specifiers:
   unplugin-auto-import: ^0.6.1
   unplugin-icons: ^0.13.2
   vite: ^2.8.0
+  vite-plugin-fonts: ^0.2.2
   vue: ^3.2.25
   vue-tsc: ^0.29.8
 
@@ -30,6 +31,7 @@ devDependencies:
   unplugin-auto-import: 0.6.1_@vueuse+core@7.6.2+vite@2.8.4
   unplugin-icons: 0.13.2_vite@2.8.4
   vite: 2.8.4
+  vite-plugin-fonts: 0.2.2_vite@2.8.4
   vue-tsc: 0.29.8_typescript@4.5.5
 
 packages:
@@ -1629,6 +1631,14 @@ packages:
   /upath/2.0.1:
     resolution: {integrity: sha512-1uEe95xksV1O0CYKXo8vQvN1JEbtJp7lb7C5U9HMsIp6IVwntkH/oNUzyVNQSd4S1sYk2FpSSW44FqMc8qee5w==}
     engines: {node: '>=4'}
+    dev: true
+
+  /vite-plugin-fonts/0.2.2_vite@2.8.4:
+    resolution: {integrity: sha512-fhzhsrTiuzlDjSO6g5sV5EVIIvbb8lmsaIY6eUTBM4lcF55x40UBpHrcyvNwIhQG211g0lu83XC7oZlkmvdkMA==}
+    peerDependencies:
+      vite: ^2.0.0
+    dependencies:
+      vite: 2.8.4
     dev: true
 
   /vite/2.8.4:
