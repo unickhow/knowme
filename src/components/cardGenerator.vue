@@ -69,6 +69,22 @@
         </div>
       </div>
 
+      <div class="field-group field--theme">
+        <legend class="mb-4 -ml-3 font-bold flex text-xl tracking-wide">
+          <mdiDrawPen class="mr-2 text-[#F19F19]" />
+          Theme
+        </legend>
+        <div class="mb-2">
+          <label class="cursor-pointer text-gray-600 inline-flex items-center">
+            <select v-model="selectedTheme">
+              <option v-for="theme in themeOptions" :value="theme">{{ theme.name }}</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <!-- ^^^ manipulator ^^^ -->
+
       <div class="bg-gray-100 rounded p-4 my-8 break-all">
         <legend class="mb-2 font-bold">Preview</legend>
         <div class="flex">
@@ -111,6 +127,7 @@ import mdiClipboardCheckOutline from '~icons/mdi/clipboard-check-outline';
 import fluentArrowReset24Filled from '~icons/fluent/arrow-reset-24-filled';
 import zmdiGithubBox from '~icons/zmdi/github-box';
 import { useThrottleFn, useClipboard } from '@vueuse/core'
+import { Themes } from '../enums/themes'
 
 const username = ref('')
 
@@ -157,6 +174,12 @@ const initCustomize = () => ({
 })
 const customization = ref(initCustomize())
 
+const themeOptions = Object.entries(Themes).map(([key, value]) => ({
+  name: key,
+  value
+}))
+const selectedTheme = ref(themeOptions[0])
+
 const allQueries = computed(() => {
   // username
   let str: string[] = [`username=${username.value}`]
@@ -179,6 +202,9 @@ const allQueries = computed(() => {
       str.push(`${key}=${prop.hex.substr(1)}`)
     }
   }
+
+  // theme
+  if (selectedTheme.value.name !== 'default') str.push(`theme=${selectedTheme.value.value}`)
 
   return str.join('&')
 })
