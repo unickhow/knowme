@@ -1,8 +1,8 @@
 <template>
   <main id="card-generator">
-    <div class="container max-w-[800px] min-h-100vh mx-auto shadow-xl px-6 py-4">
+    <div class="container max-w-[575px] min-h-100vh mx-auto shadow-xl px-6 py-4">
       <div class="kv mb-8">
-        <h1 class="mb-2">knowme</h1>
+        <h1 class="mb-2 main-title">knowme</h1>
         <p class="m-0 text-gray-900 text-sm flex flex-wrap items-center">A readme cards generator, inspired by
           <a class="inline-flex items-center px-2 visited:text-current" href="https://github.com/anuraghazra/github-readme-stats" target="_blank">github-readme-stats</a>
         </p>
@@ -21,7 +21,7 @@
       </div>
       <div class="field-group field--hiding-stats">
         <legend class="mb-4 -ml-3 font-bold flex text-xl tracking-wide">
-          <mdiDrawPen class="mr-2 text-[#F19F19]" />
+          <bxHide class="mr-2 text-[#F19F19]" />
           Hiding Stats
         </legend>
         <div v-for="(value, key) in Stats" :key="key" class="mb-2">
@@ -38,7 +38,7 @@
       </div>
       <div class="field-group field--others">
         <legend class="mb-4 -ml-3 font-bold flex text-xl tracking-wide">
-          <mdiDrawPen class="mr-2 text-[#F19F19]" />
+          <icRoundDashboardCustomize class="mr-2 text-[#F19F19]" />
           Others
         </legend>
         <div v-for="(value, key) in boolFlags" :key="key" class="mb-2">
@@ -54,7 +54,7 @@
       </div>
       <div class="field-group field--customization">
         <legend class="mb-4 -ml-3 font-bold flex text-xl tracking-wide">
-          <mdiDrawPen class="mr-2 text-[#F19F19]" />
+          <icBaselineStyle class="mr-2 text-[#F19F19]" />
           Customization
         </legend>
         <div v-for="(prop, key) in customization" :key="key" class="mb-2">
@@ -71,7 +71,7 @@
 
       <div class="field-group field--theme">
         <legend class="mb-4 -ml-3 font-bold flex text-xl tracking-wide">
-          <mdiDrawPen class="mr-2 text-[#F19F19]" />
+          <mdiThemeLightDark class="mr-2 text-[#F19F19]" />
           Theme
         </legend>
         <div class="mb-2">
@@ -122,8 +122,12 @@
 <script lang="ts" setup>
 import mdiCardAccountDetailsStarOutline from '~icons/mdi/card-account-details-star-outline';
 import mdiDrawPen from '~icons/mdi/draw-pen';
+import icBaselineStyle from '~icons/ic/baseline-style';
+import bxHide from '~icons/bx/hide';
 import lucideCopy from '~icons/lucide/copy';
 import mdiClipboardCheckOutline from '~icons/mdi/clipboard-check-outline';
+import mdiThemeLightDark from '~icons/mdi/theme-light-dark';
+import icRoundDashboardCustomize from '~icons/ic/round-dashboard-customize';
 import fluentArrowReset24Filled from '~icons/fluent/arrow-reset-24-filled';
 import zmdiGithubBox from '~icons/zmdi/github-box';
 import { useThrottleFn, useClipboard } from '@vueuse/core'
@@ -243,6 +247,24 @@ const handleReset = () => {
   background-color: #fff;
   font-family: 'Ubuntu', sans-serif;
 }
+
+.main-title {
+  z-index: 1;
+  @apply relative;
+}
+
+.main-title::before {
+  @apply absolute;
+  content: '';
+  bottom: .15rem;
+  left: -.25rem;
+  width: 80px;
+  height: .8rem;
+  background: #F19F19;
+  opacity: .6;
+  z-index: -1;
+}
+
 .field-group {
   @apply flex flex-col mb-4 rounded-md p-4;
   box-shadow: 10px 10px 15px rgba(225, 225, 225, 0.5);
