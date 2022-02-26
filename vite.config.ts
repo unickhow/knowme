@@ -5,6 +5,7 @@ import presetWind from '@unocss/preset-wind'
 import AutoImport from 'unplugin-auto-import/vite'
 import Icons from 'unplugin-icons/vite'
 import transformerDirective from '@unocss/transformer-directives'
+import ViteFonts from 'vite-plugin-fonts'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -26,6 +27,11 @@ export default defineConfig({
     }),
     Icons({
       autoInstall: true
+    }),
+    ViteFonts({
+      google: {
+        families: ['Ubuntu']
+      }
     })
   ]
 })

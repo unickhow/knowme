@@ -32,7 +32,7 @@
               class="mr-2"
               v-model="hidingStats"
               :value="key">
-            <span>{{ value }}</span>
+            <span>{{ caseConvert(value) }}</span>
           </label>
         </div>
       </div>
@@ -48,7 +48,7 @@
               class="mr-2"
               v-model="boolFlags[key]"
               :value="value">
-            <span>{{ key }}</span>
+            <span>{{ caseConvert(key) }}</span>
           </label>
         </div>
       </div>
@@ -63,7 +63,7 @@
               type="checkbox"
               class="mr-2"
               v-model="prop.isChecked">
-            <span>{{ key }}</span>
+            <span>{{ caseConvert(key) }}</span>
             <input type="color" class="ml-2" v-model="prop.hex">
           </label>
         </div>
@@ -117,7 +117,7 @@ const username = ref('')
 enum Stats {
   stars = 'stars',
   commits = 'commits',
-  prs = 'pull requests',
+  prs = 'pull_requests',
   issues = 'issues',
   contribs = 'contributes'
 }
@@ -183,6 +183,11 @@ const allQueries = computed(() => {
   return str.join('&')
 })
 
+const caseConvert = (str: string) => {
+  const sentence = str.split('_')
+  return sentence.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+}
+
 const assembledApi = computed(() => `https://github-readme-stats.vercel.app/api?${allQueries.value}`)
 const fullMd = computed(() => `[![${username.value}'s GitHub stats](${assembledApi.value})](https://github.com/anuraghazra/github-readme-stats)`)
 const { copy, copied, isSupported } = useClipboard({ source: fullMd })
@@ -210,6 +215,7 @@ const handleReset = () => {
 <style scoped>
 .container {
   background-color: #fff;
+  font-family: 'Ubuntu', sans-serif;
 }
 .field-group {
   @apply flex flex-col mb-4 rounded-md p-4;
