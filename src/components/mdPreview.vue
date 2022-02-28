@@ -16,7 +16,7 @@ import lucideCopy from '~icons/lucide/copy'
 import mdiClipboardCheckOutline from '~icons/mdi/clipboard-check-outline'
 import { useClipboard } from '@vueuse/core'
 
-const username = inject('username', '')
+const username = inject('username', '') as any
 const props = defineProps({
   apiUrl: {
     type: String,

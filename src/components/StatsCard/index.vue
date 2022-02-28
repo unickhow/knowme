@@ -93,7 +93,7 @@ import { Themes } from '../../enums/themes';
 import CardBlock from '../cardBlock.vue';
 import MdPreview from '../mdPreview.vue'
 
-const username = inject('username', '')
+const username = inject('username', '') as any
 
 enum Stats {
   stars = 'stars',
