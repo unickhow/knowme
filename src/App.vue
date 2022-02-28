@@ -19,7 +19,11 @@
         </div>
       </CardBlock>
 
-      <StatsCard @resetUserName="username = ''" />
+      <span @click="tab = 'stats'">stats</span>
+      <span @click="tab = 'repo'">repo</span>
+
+      <StatsCard v-show="tab === 'stats'" @resetUserName="username = ''" />
+      <RepoCard v-show="tab === 'repo'" @resetUserName="username = ''" />
 
       <footer class="text-center">
         <a class="p-1 opacity-50 color-[#1d1d1d] hover:opacity-100 transition-opacity" href="https://github.com/unickhow" target="_blank">
@@ -35,7 +39,9 @@ import mdiDrawPen from '~icons/mdi/draw-pen';
 import zmdiGithubBox from '~icons/zmdi/github-box';
 import CardBlock from './components/cardBlock.vue';
 import StatsCard from './components/StatsCard/index.vue';
+import RepoCard from './components/RepoCard/index.vue';
 
+const tab = ref('repo')
 const username = ref('')
 
 provide('username', username)
