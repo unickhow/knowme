@@ -63,16 +63,7 @@
 
     <!-- ^^^ manipulator ^^^ -->
 
-    <div class="bg-gray-100 rounded p-4 my-8 break-all">
-      <legend class="mb-2 font-bold">Preview</legend>
-      <div class="flex">
-        <code class="mr-4 leading-normal">{{ assembledApi }}</code>
-        <button class="border-none p-1 bg-transparent ml-auto text-gray-400 cursor-pointer hover:text-gray-600" @click="handleCopyMd">
-          <lucideCopy v-show="!copied" />
-          <mdiClipboardCheckOutline v-show="copied" class="color-[#F19F19]" />
-        </button>
-      </div>
-    </div>
+    <MdPreview :apiUrl="assembledApi" />
 
     <div class="flex items-center justify-center">
       <button class="is-btn flex items-center mr-4 disabled:pointer-events-none" :disabled="!username" @click="handleGenerate">
@@ -94,15 +85,13 @@
 import mdiCardAccountDetailsStarOutline from '~icons/mdi/card-account-details-star-outline';
 import icBaselineStyle from '~icons/ic/baseline-style';
 import bxHide from '~icons/bx/hide';
-import lucideCopy from '~icons/lucide/copy';
-import mdiClipboardCheckOutline from '~icons/mdi/clipboard-check-outline';
 import mdiThemeLightDark from '~icons/mdi/theme-light-dark';
 import icRoundDashboardCustomize from '~icons/ic/round-dashboard-customize';
 import fluentArrowReset24Filled from '~icons/fluent/arrow-reset-24-filled';
-import { useThrottleFn, useClipboard } from '@vueuse/core'
-
+import { useThrottleFn } from '@vueuse/core'
 import { Themes } from '../../enums/themes';
 import CardBlock from '../cardBlock.vue';
+import MdPreview from '../mdPreview.vue'
 
 const username = inject('username', '')
 
@@ -190,14 +179,6 @@ const caseConvert = (str: string) => {
 }
 
 const assembledApi = computed(() => `https://github-readme-stats.vercel.app/api?${allQueries.value}`)
-const fullMd = computed(() => `[![${username.value}'s GitHub stats](${assembledApi.value})](https://github.com/anuraghazra/github-readme-stats)`)
-const { copy, copied, isSupported } = useClipboard({ source: fullMd })
-const handleCopyMd = () => {
-  if (isSupported) {
-    copy()
-    return
-  }
-}
 
 const imgSrc = ref('https://via.placeholder.com/495x195.png?text=check+your+username')
 const handleGenerate = useThrottleFn(() => {
