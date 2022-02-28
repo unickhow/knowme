@@ -31,7 +31,7 @@
       <RepoCard v-show="tab === 'repo'" @resetUserName="username = ''" />
 
       <footer class="text-center">
-        <a class="p-1 opacity-50 color-[#1d1d1d] hover:opacity-100 transition-opacity" href="https://github.com/unickhow" target="_blank">
+        <a class="p-1 opacity-50 color-[#1d1d1d] hover:opacity-100 transition-opacity" href="https://github.com/unickhow/knowme" target="_blank">
           <zmdiGithubBox />
         </a>
       </footer>
