@@ -21,7 +21,6 @@ const props = defineProps({
 })
 </script>
 
-
 <style scoped>
 .field-group {
   @apply flex flex-col mb-4 rounded-md p-4;
