@@ -1,6 +1,6 @@
 <template>
   <main id="card-generator">
-    <div class="container max-w-[575px] min-h-100vh mx-auto shadow-xl px-6 py-4">
+    <div class="container max-w-[575px] min-h-100vh mx-auto shadow-xl px-6 py-4 relative">
       <div class="kv mb-8">
         <h1 class="mb-2 main-title">knowme</h1>
         <p class="m-0 text-gray-900 text-sm flex flex-wrap items-center">A readme cards generator, inspired by
@@ -19,8 +19,13 @@
         </div>
       </CardBlock>
 
-      <span @click="tab = 'stats'">stats</span>
-      <span @click="tab = 'repo'">repo</span>
+      <div class="tab-marks sm:absolute sm:rotate-90 -right-[84px] top-80 flex">
+        <span
+          v-for="tabName in tabs"
+          class="py-2 px-4 bg-gray-300 opacity-30 rounded-t-md cursor-pointer"
+          :class="{ 'bg-white !opacity-100 color-[#f19f19]': tab === tabName }"
+          @click="tab = tabName">{{ tabName }}</span>
+      </div>
 
       <StatsCard v-show="tab === 'stats'" @resetUserName="username = ''" />
       <RepoCard v-show="tab === 'repo'" @resetUserName="username = ''" />
@@ -40,8 +45,10 @@ import zmdiGithubBox from '~icons/zmdi/github-box';
 import CardBlock from './components/cardBlock.vue';
 import StatsCard from './components/StatsCard/index.vue';
 import RepoCard from './components/RepoCard/index.vue';
+import { Tabs } from './enums/Tabs';
 
-const tab = ref('repo')
+const tabs = Object.values(Tabs)
+const tab = ref(tabs[0])
 const username = ref('')
 
 provide('username', username)

@@ -53,7 +53,11 @@
 </template>
 
 <script lang="ts" setup>
+import lucideCopy from '~icons/lucide/copy';
+import mdiClipboardCheckOutline from '~icons/mdi/clipboard-check-outline';
 import octiconRepo from '~icons/octicon/repo'
+import mdiCardAccountDetailsStarOutline from '~icons/mdi/card-account-details-star-outline';
+import fluentArrowReset24Filled from '~icons/fluent/arrow-reset-24-filled';
 import icRoundDashboardCustomize from '~icons/ic/round-dashboard-customize'
 
 import CardBlock from '../cardBlock.vue'
