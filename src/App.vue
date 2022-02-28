@@ -45,7 +45,7 @@ import zmdiGithubBox from '~icons/zmdi/github-box';
 import CardBlock from './components/cardBlock.vue';
 import StatsCard from './components/StatsCard/index.vue';
 import RepoCard from './components/RepoCard/index.vue';
-import { Tabs } from './enums/Tabs';
+import { Tabs } from './enums/tabs';
 
 const tabs = Object.values(Tabs)
 const tab = ref(tabs[0])
