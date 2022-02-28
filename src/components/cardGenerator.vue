@@ -9,21 +9,20 @@
         <i class="text-sm text-gray-500">better UI, Repo card, and Language card are WIP.</i>
       </div>
 
-      <div class="field-group field--username">
-        <legend class="mb-4 -ml-3 font-bold flex text-xl tracking-wide">
+      <CardBlock title="GitHub's username" class="field--username">
+        <template #icon>
           <mdiDrawPen class="mr-2 text-[#F19F19]" />
-          GitHub's username
-        </legend>
+        </template>
         <div class="flex items-center text-gray-600">
           <span class="mr-1">@</span>
           <input type="text" autofocus v-model.trim="username" class="is-input w-[150px]" @keyup.enter="handleGenerate">
         </div>
-      </div>
-      <div class="field-group field--hiding-stats">
-        <legend class="mb-4 -ml-3 font-bold flex text-xl tracking-wide">
+      </CardBlock>
+
+      <CardBlock title="Hiding Stats" class="field--hiding-stats">
+        <template #icon>
           <bxHide class="mr-2 text-[#F19F19]" />
-          Hiding Stats
-        </legend>
+        </template>
         <div v-for="(value, key) in Stats" :key="key" class="mb-2">
           <label class="cursor-pointer text-gray-600">
             <input
@@ -35,12 +34,11 @@
             <span>{{ caseConvert(value) }}</span>
           </label>
         </div>
-      </div>
-      <div class="field-group field--others">
-        <legend class="mb-4 -ml-3 font-bold flex text-xl tracking-wide">
+      </CardBlock>
+      <CardBlock title="Others" class="field--others">
+        <template #icon>
           <icRoundDashboardCustomize class="mr-2 text-[#F19F19]" />
-          Others
-        </legend>
+        </template>
         <div v-for="(value, key) in boolFlags" :key="key" class="mb-2">
           <label class="cursor-pointer text-gray-600">
             <input
@@ -51,12 +49,12 @@
             <span>{{ caseConvert(key) }}</span>
           </label>
         </div>
-      </div>
-      <div class="field-group field--customization">
-        <legend class="mb-4 -ml-3 font-bold flex text-xl tracking-wide">
+      </CardBlock>
+
+      <CardBlock title="Customization" class="field--customization">
+        <template #icon>
           <icBaselineStyle class="mr-2 text-[#F19F19]" />
-          Customization
-        </legend>
+        </template>
         <div v-for="(prop, key) in customization" :key="key" class="mb-2">
           <label class="cursor-pointer text-gray-600 inline-flex items-center">
             <input
@@ -67,21 +65,20 @@
             <input type="color" class="ml-2" v-model="prop.hex">
           </label>
         </div>
-      </div>
+      </CardBlock>
 
-      <div class="field-group field--theme">
-        <legend class="mb-4 -ml-3 font-bold flex text-xl tracking-wide">
+      <CardBlock title="Others" class="field--theme">
+        <template #icon>
           <mdiThemeLightDark class="mr-2 text-[#F19F19]" />
-          Theme
-        </legend>
+        </template>
         <div class="mb-2">
           <label class="cursor-pointer text-gray-600 inline-flex items-center">
-            <select v-model="selectedTheme">
+            <select v-model="selectedTheme" class="px-2 py-1">
               <option v-for="theme in themeOptions" :value="theme">{{ theme.name }}</option>
             </select>
           </label>
         </div>
-      </div>
+      </CardBlock>
 
       <!-- ^^^ manipulator ^^^ -->
 
@@ -107,7 +104,7 @@
         </button>
       </div>
       <div class="my-8 text-center">
-        <img class="max-w-full" :src="imgSrc" alt="">
+        <img class="max-w-full" :class="{ 'rounded-md': imgSrc.includes('placeholder.com') }" :src="imgSrc" alt="">
       </div>
 
       <div class="text-center">
@@ -132,6 +129,7 @@ import fluentArrowReset24Filled from '~icons/fluent/arrow-reset-24-filled';
 import zmdiGithubBox from '~icons/zmdi/github-box';
 import { useThrottleFn, useClipboard } from '@vueuse/core'
 import { Themes } from '../enums/themes'
+import CardBlock from './cardBlock.vue'
 
 const username = ref('')
 
@@ -263,11 +261,6 @@ const handleReset = () => {
   background: #F19F19;
   opacity: .6;
   z-index: -1;
-}
-
-.field-group {
-  @apply flex flex-col mb-4 rounded-md p-4;
-  box-shadow: 10px 10px 15px rgba(225, 225, 225, 0.5);
 }
 
 .is-btn {
