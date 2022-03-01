@@ -48,7 +48,7 @@
       </div>
     </CardBlock>
 
-    <CardBlock title="Others" class="field--theme">
+    <CardBlock title="Theme" class="field--theme">
       <template #icon>
         <mdiThemeLightDark class="mr-2 text-[#F19F19]" />
       </template>
@@ -59,6 +59,15 @@
           </select>
         </label>
       </div>
+      <figure class="m-0 my-2">
+        <img
+          :src="getPreviewImg(selectedTheme.value)"
+          class="max-w-[400px] w-full"
+          alt="theme-preview">
+      </figure>
+      <a href="https://github.com/anuraghazra/github-readme-stats/blob/master/themes/README.md" class="text-xs text-gray-400" target="_blank">
+        <i>- theme preview (github-readme-stats/themes/README.md)</i>
+      </a>
     </CardBlock>
 
     <!-- ^^^ manipulator ^^^ -->
@@ -89,7 +98,7 @@ import mdiThemeLightDark from '~icons/mdi/theme-light-dark';
 import icRoundDashboardCustomize from '~icons/ic/round-dashboard-customize';
 import fluentArrowReset24Filled from '~icons/fluent/arrow-reset-24-filled';
 import { useThrottleFn } from '@vueuse/core'
-import { Themes } from '../../enums/themes';
+import { Themes, getPreviewImg } from '../../enums/themes';
 import CardBlock from '../cardBlock.vue';
 import MdPreview from '../mdPreview.vue'
 
