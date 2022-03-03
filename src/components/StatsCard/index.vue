@@ -48,29 +48,7 @@
       </div>
     </CardBlock>
 
-    <CardBlock title="Theme" class="field--theme">
-      <template #icon>
-        <mdiThemeLightDark class="mr-2 text-[#F19F19]" />
-      </template>
-      <div class="mb-2">
-        <label class="cursor-pointer text-gray-600 inline-flex items-center">
-          <select v-model="selectedTheme" class="px-2 py-1">
-            <option v-for="theme in themeOptions" :value="theme">{{ theme.name }}</option>
-          </select>
-        </label>
-      </div>
-      <figure class="m-0 my-2">
-        <img
-          :src="getPreviewImg(selectedTheme.value)"
-          class="max-w-[400px] w-full"
-          alt="theme-preview">
-      </figure>
-      <a href="https://github.com/anuraghazra/github-readme-stats/blob/master/themes/README.md" class="text-xs text-gray-400" target="_blank">
-        <i>- theme preview (github-readme-stats/themes/README.md)</i>
-      </a>
-    </CardBlock>
-
-    <!-- ^^^ manipulator ^^^ -->
+    <ThemePreview v-model:theme="selectedTheme" category="stats" />
 
     <MdPreview :apiUrl="assembledApi" />
 
@@ -91,16 +69,15 @@
 </template>
 
 <script lang="ts" setup>
-import mdiCardAccountDetailsStarOutline from '~icons/mdi/card-account-details-star-outline';
-import icBaselineStyle from '~icons/ic/baseline-style';
-import bxHide from '~icons/bx/hide';
-import mdiThemeLightDark from '~icons/mdi/theme-light-dark';
-import icRoundDashboardCustomize from '~icons/ic/round-dashboard-customize';
-import fluentArrowReset24Filled from '~icons/fluent/arrow-reset-24-filled';
+import mdiCardAccountDetailsStarOutline from '~icons/mdi/card-account-details-star-outline'
+import icBaselineStyle from '~icons/ic/baseline-style'
+import bxHide from '~icons/bx/hide'
+import icRoundDashboardCustomize from '~icons/ic/round-dashboard-customize'
+import fluentArrowReset24Filled from '~icons/fluent/arrow-reset-24-filled'
 import { useThrottleFn } from '@vueuse/core'
-import { Themes, getPreviewImg } from '../../enums/themes';
-import CardBlock from '../cardBlock.vue';
+import CardBlock from '../cardBlock.vue'
 import MdPreview from '../mdPreview.vue'
+import ThemePreview from '../themePreview.vue'
 
 const username = inject('username', '') as any
 
@@ -146,12 +123,7 @@ const initCustomize = () => ({
   }
 })
 const customization = ref(initCustomize())
-
-const themeOptions = Object.entries(Themes).map(([key, value]) => ({
-  name: key,
-  value
-}))
-const selectedTheme = ref(themeOptions[0])
+const selectedTheme = ref('default')
 
 const allQueries = computed(() => {
   // username
@@ -177,7 +149,7 @@ const allQueries = computed(() => {
   }
 
   // theme
-  if (selectedTheme.value.name !== 'default') str.push(`theme=${selectedTheme.value.value}`)
+  if (selectedTheme.value !== 'default') str.push(`theme=${selectedTheme.value}`)
 
   return str.join('&')
 })

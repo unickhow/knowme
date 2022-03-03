@@ -25,6 +25,8 @@
       </div>
     </CardBlock>
 
+    <ThemePreview v-model:theme="selectedTheme" category="repo" />
+
     <MdPreview :apiUrl="assembledApi" />
 
     <div class="flex items-center justify-center">
@@ -51,10 +53,12 @@ import icRoundDashboardCustomize from '~icons/ic/round-dashboard-customize'
 import { useThrottleFn } from '@vueuse/core'
 import CardBlock from '../cardBlock.vue'
 import MdPreview from '../mdPreview.vue'
+import ThemePreview from '../themePreview.vue'
 
 const username = inject('username', '') as any
 const repoName = ref('')
 const shouldShowOwner = ref(false)
+const selectedTheme = ref('default_repocard')
 
 const allQueries = computed(() => {
   let str: string[] = [`username=${username.value}`, `repo=${repoName.value}`]
@@ -62,6 +66,8 @@ const allQueries = computed(() => {
   if (shouldShowOwner.value) {
     str.push('show_owner=true')
   }
+
+  if (selectedTheme.value !== 'default_repocard') str.push(`theme=${selectedTheme.value}`)
 
   return str.join('&')
 })
