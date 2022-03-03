@@ -6,7 +6,7 @@
         <p class="m-0 text-gray-900 text-sm flex flex-wrap items-center">A readme cards generator, inspired by
           <a class="inline-flex items-center px-2 visited:text-current" href="https://github.com/anuraghazra/github-readme-stats" target="_blank">github-readme-stats</a>
         </p>
-        <i class="text-sm text-gray-500">better UI, Repo card, and Language card are WIP.</i>
+        <i class="text-sm text-gray-500">Language card is WIP.</i>
       </div>
 
       <CardBlock title="GitHub's username" class="field--username">
