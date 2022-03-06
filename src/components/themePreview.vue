@@ -1,7 +1,7 @@
 <template>
   <CardBlock title="Theme" class="field--theme">
     <template #icon>
-      <mdiThemeLightDark class="mr-2 text-[#F19F19]" />
+      <mdiThemeLightDark class="mr-2 text-[#ff7a00]" />
     </template>
     <div class="mb-2">
       <label class="cursor-pointer text-gray-600 inline-flex items-center">

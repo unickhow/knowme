@@ -2,7 +2,7 @@
   <div class="stats-card">
     <CardBlock title="Hiding Stats" class="field--hiding-stats">
       <template #icon>
-        <bxHide class="mr-2 text-[#F19F19]" />
+        <bxHide class="mr-2 text-[#ff7a00]" />
       </template>
       <div v-for="(value, key) in Stats" :key="key" class="mb-2">
         <label class="cursor-pointer text-gray-600">
@@ -18,7 +18,7 @@
     </CardBlock>
     <CardBlock title="Others" class="field--others">
       <template #icon>
-        <icRoundDashboardCustomize class="mr-2 text-[#F19F19]" />
+        <icRoundDashboardCustomize class="mr-2 text-[#ff7a00]" />
       </template>
       <div v-for="(value, key) in boolFlags" :key="key" class="mb-2">
         <label class="cursor-pointer text-gray-600">
@@ -32,9 +32,25 @@
       </div>
     </CardBlock>
 
+    <CardBlock title="Colors" class="field--colors">
+      <template #icon>
+        <icBaselineStyle class="mr-2 text-[#ff7a00]" />
+      </template>
+      <div v-for="(prop, key) in colors" :key="key" class="mb-2">
+        <label class="cursor-pointer text-gray-600 inline-flex items-center">
+          <input
+            type="checkbox"
+            class="mr-2"
+            v-model="prop.isChecked">
+          <span>{{ caseConvert(key) }}</span>
+          <input type="color" class="ml-2" v-model="prop.hex">
+        </label>
+      </div>
+    </CardBlock>
+
     <CardBlock title="Customization" class="field--customization">
       <template #icon>
-        <icBaselineStyle class="mr-2 text-[#F19F19]" />
+        <gridiconsCustomize class="mr-2 text-[#ff7a00]" />
       </template>
       <div v-for="(prop, key) in customization" :key="key" class="mb-2">
         <label class="cursor-pointer text-gray-600 inline-flex items-center">
@@ -43,7 +59,7 @@
             class="mr-2"
             v-model="prop.isChecked">
           <span>{{ caseConvert(key) }}</span>
-          <input type="color" class="ml-2" v-model="prop.hex">
+          <input type="text" class="ml-2" v-model="prop.value">
         </label>
       </div>
     </CardBlock>
@@ -74,10 +90,12 @@ import icBaselineStyle from '~icons/ic/baseline-style'
 import bxHide from '~icons/bx/hide'
 import icRoundDashboardCustomize from '~icons/ic/round-dashboard-customize'
 import fluentArrowReset24Filled from '~icons/fluent/arrow-reset-24-filled'
+import gridiconsCustomize from '~icons/gridicons/customize'
 import { useThrottleFn } from '@vueuse/core'
 import CardBlock from '../cardBlock.vue'
 import MdPreview from '../mdPreview.vue'
 import ThemePreview from '../themePreview.vue'
+import caseConvert from '../../utils/caseConvert'
 
 const username = inject('username', '') as any
 
@@ -96,11 +114,32 @@ const initFlags = () => ({
   hide_title: false,
   hide_rank: false,
   include_all_commits: false,
-  disable_animations: false
+  disable_animations: false,
+  hide_border: false
 })
 const boolFlags = ref(initFlags())
 
-const initCustomize = () => ({
+const initCustomization = () => ({
+  cache_seconds: {
+    isChecked: false,
+    value: 1800,
+  },
+  border_radius: {
+    isChecked: false,
+    value: 0
+  },
+  line_height: {
+    isChecked: false,
+    value: 16
+  },
+  custom_title: {
+    isChecked: false,
+    value: ''
+  }
+})
+const customization = ref(initCustomization())
+
+const initColors = () => ({
   title_color: {
     isChecked: false,
     hex: '#000000'
@@ -122,7 +161,7 @@ const initCustomize = () => ({
     hex: '#000000'
   }
 })
-const customization = ref(initCustomize())
+const colors = ref(initColors())
 const selectedTheme = ref('default')
 
 const allQueries = computed(() => {
@@ -141,10 +180,17 @@ const allQueries = computed(() => {
     }
   }
 
+  // colors
+  for (const [key, prop] of Object.entries(colors.value)) {
+    if (prop.isChecked) {
+      str.push(`${key}=${prop.hex.substr(1)}`)
+    }
+  }
+
   // customization
   for (const [key, prop] of Object.entries(customization.value)) {
     if (prop.isChecked) {
-      str.push(`${key}=${prop.hex.substr(1)}`)
+      str.push(`${key}=${prop.value}`)
     }
   }
 
@@ -153,11 +199,6 @@ const allQueries = computed(() => {
 
   return str.join('&')
 })
-
-const caseConvert = (str: string) => {
-  const sentence = str.split('_')
-  return sentence.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-}
 
 const assembledApi = computed(() => `https://github-readme-stats.vercel.app/api?${allQueries.value}`)
 
@@ -168,11 +209,11 @@ const handleGenerate = useThrottleFn(() => {
 }, 1000, false)
 
 const emit = defineEmits(['resetUserName'])
-const handleReset = () => { 
+const handleReset = () => {
   emit('resetUserName')
   hidingStats.value = []
   boolFlags.value = initFlags()
-  customization.value = initCustomize()
+  colors.value = initColors()
 }
 </script>
 

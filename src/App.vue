@@ -23,7 +23,7 @@
         <span
           v-for="tabName in tabs"
           class="py-2 px-4 bg-gray-300 opacity-30 rounded-t-md cursor-pointer"
-          :class="{ 'bg-white !opacity-100 color-[#f19f19]': tab === tabName }"
+          :class="{ 'bg-white !opacity-100 color-[#ff7a00]': tab === tabName }"
           @click="tab = tabName">{{ tabName }}</span>
       </div>
 
@@ -72,7 +72,7 @@ provide('username', username)
   left: -.25rem;
   width: 80px;
   height: .8rem;
-  background: #F19F19;
+  background: #ff7a00;
   opacity: .6;
   z-index: -1;
 }
@@ -93,6 +93,6 @@ html, body {
 }
 
 .is-btn:active svg {
-  color: #F19F19;
+  color: #ff70aa;
 }
 </style>

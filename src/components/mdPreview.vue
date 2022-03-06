@@ -5,7 +5,7 @@
       <code class="mr-4 leading-normal">{{ props.apiUrl }}</code>
       <button class="border-none p-1 bg-transparent ml-auto text-gray-400 cursor-pointer hover:text-gray-600" @click="handleCopyMd">
         <lucideCopy v-show="!copied" />
-        <mdiClipboardCheckOutline v-show="copied" class="color-[#F19F19]" />
+        <mdiClipboardCheckOutline v-show="copied" class="color-[#ff7a00]" />
       </button>
     </div>
   </div>
