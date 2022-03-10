@@ -46,6 +46,7 @@
           <input type="color" class="ml-2" v-model="prop.hex">
         </label>
       </div>
+      <!-- <GradientPalette /> -->
     </CardBlock>
 
     <CardBlock title="Customization" class="field--customization">
@@ -96,6 +97,7 @@ import CardBlock from '../cardBlock.vue'
 import MdPreview from '../mdPreview.vue'
 import ThemePreview from '../themePreview.vue'
 import caseConvert from '../../utils/caseConvert'
+// import GradientPalette from '../gradientPalette.vue'
 
 const username = inject('username', '') as any
 
