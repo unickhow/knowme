@@ -37,7 +37,7 @@
         <icBaselineStyle class="mr-2 text-[#ff7a00]" />
       </template>
       <div v-for="(prop, key) in colors" :key="key" class="mb-2">
-        <label class="cursor-pointer text-gray-600 inline-flex items-center">
+        <label v-if="key !== 'bg_color'" class="cursor-pointer text-gray-600 inline-flex items-center">
           <input
             type="checkbox"
             class="mr-2"
@@ -45,8 +45,29 @@
           <span>{{ caseConvert(key) }}</span>
           <input type="color" class="ml-2" v-model="prop.hex">
         </label>
+
+        <label v-else class="cursor-pointer text-gray-600 flex flex-col">
+          <div class="flex">
+            <input type="checkbox" class="mr-2" v-model="prop.isChecked">
+            <span>{{ caseConvert(key) }}</span>
+          </div>
+          <div class="flex flex-col pl-4 mt-2">
+            <label class="leading-[2rem] mb-2">
+              <input type="radio" v-model="bgColorType" value="single" name="bgType">
+              <span>Single</span>
+              <input v-show="bgColorType === 'single'" type="color" class="ml-2" v-model="prop.hex">
+            </label>
+            <label class="leading-[2rem]">
+              <input type="radio" v-model="bgColorType" value="gradient" name="bgType">
+              <span class="inline-flex items-center" title="the 1st color will cover 50% of all and can not be overridden, so try different angles to view palette combination might help.">
+                Gradient
+                <fluentInfo12Regular class="ml-2 text-sm opacity-50" />
+              </span>
+              <GradientPalette v-show="bgColorType === 'gradient'" @paletteChange="handleBgGradientChange" />
+            </label>
+          </div>
+        </label>
       </div>
-      <!-- <GradientPalette /> -->
     </CardBlock>
 
     <CardBlock title="Customization" class="field--customization">
@@ -91,13 +112,14 @@ import icBaselineStyle from '~icons/ic/baseline-style'
 import bxHide from '~icons/bx/hide'
 import icRoundDashboardCustomize from '~icons/ic/round-dashboard-customize'
 import fluentArrowReset24Filled from '~icons/fluent/arrow-reset-24-filled'
+import fluentInfo12Regular from '~icons/fluent/info-12-regular'
 import gridiconsCustomize from '~icons/gridicons/customize'
 import { useThrottleFn } from '@vueuse/core'
 import CardBlock from '../cardBlock.vue'
 import MdPreview from '../mdPreview.vue'
 import ThemePreview from '../themePreview.vue'
 import caseConvert from '../../utils/caseConvert'
-// import GradientPalette from '../gradientPalette.vue'
+import GradientPalette from '../gradientPalette.vue'
 
 const username = inject('username', '') as any
 
@@ -141,6 +163,7 @@ const initCustomization = () => ({
 })
 const customization = ref(initCustomization())
 
+const bgColorType = ref('single') // single, gradient
 const initColors = () => ({
   title_color: {
     isChecked: false,
@@ -166,6 +189,11 @@ const initColors = () => ({
 const colors = ref(initColors())
 const selectedTheme = ref('default')
 
+const bgGradientColors = ref('')
+const handleBgGradientChange = (gradient: string) => {
+  bgGradientColors.value = gradient
+}
+
 const allQueries = computed(() => {
   // username
   let str: string[] = [`username=${username.value}`]
@@ -185,7 +213,11 @@ const allQueries = computed(() => {
   // colors
   for (const [key, prop] of Object.entries(colors.value)) {
     if (prop.isChecked) {
-      str.push(`${key}=${prop.hex.substr(1)}`)
+      str.push(`${key}=${
+        key === 'bg_color' && bgColorType.value === 'gradient'
+          ? bgGradientColors.value
+          : prop.hex.substring(1)
+        }`)
     }
   }
 

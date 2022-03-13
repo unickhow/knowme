@@ -1,13 +1,9 @@
 <template>
-  <div class="palette-wrapper">
-    {{ finalAngle }} deg
+  <div ref="demo" class="palette-wrapper">
     <div
       ref="knob"
       class="outer-wheel"
-      :style="{ background: state.bgColor, transform: `rotate(${state.knobDeg + state.rotation}deg)` }"
-      @mousedown.prevent="startRotate"
-      @mousemove.prevent="onRotating"
-      @mouseup.prevent="stopRotate">
+      :style="{ background: state.bgColor, transform: `rotate(${finalAngle}deg)` }">
     </div>
     <div class="palette">
       <label
@@ -15,28 +11,32 @@
         v-for="(color, index) in state.colors"
         :style="{ background: color }">
         <code :style="{ color: isColorBrighten(color) ? 'black' : 'white' }">
-          {{ color.toUpperCase() }}<small @click.self="removeColor(index)">✕</small>
+          {{ color.toUpperCase() }}<small :class="{ 'opacity-0': state.colors.length <= 2 }" @click.self="removeColor(index)">✕</small>
         </code>
         <input type="color" v-model="state.colors[index]">
       </label>
-      <button @click="addColor">+</button>
+      <button class="ml-[.25rem] py-1 px-2 is-btn" @click="addColor">+</button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { fromEvent, useObservable } from '@vueuse/rxjs'
+import { switchMap, map } from 'rxjs/operators'
+import { takeUntil } from 'rxjs/operators'
+
 const genRandomColor = () => {
   const hex = Math.floor(Math.random() * 16777215).toString(16)
   return `#${hex.padStart(6, '0')}`;
 }
 
+const R2D = 180 / Math.PI
 const state: any = reactive({
   knobDeg: 0,
   colors: [genRandomColor(), genRandomColor()],
   isRotating: false,
   tempRotation: 0,
   rotation: 0,
-  r2d: 180 / Math.PI,
   startAngle: 0,
   rotateCenter: {
     x: 0,
@@ -46,44 +46,57 @@ const state: any = reactive({
 })
 
 const knob = ref()
+const app = ref<HTMLElement>(document.querySelector('#app')!)
 
-const startRotate = (evt: MouseEvent) => {
-  const rect = knob.value.getBoundingClientRect()
-  const { top, left, height, width } = rect
-  state.rotateCenter = {
-    x: left + width / 2,
-    y: top + height / 2
-  }
-  const x = evt.clientX - state.rotateCenter.x
-  const y = evt.clientY - state.rotateCenter.y
-  state.startAngle = state.r2d * Math.atan2(y, x)
-  state.tempRotation = state.rotation
-  state.isRotating = true
-}
+const emit = defineEmits(['paletteChange'])
+const paletteResult = computed(() => {
+  return `${finalAngle.value - 90},${state.colors.map((color: string) => color.slice(1)).join(",")}`
+})
 
-const onRotating = (evt: MouseEvent) => {
-  if (state.isRotating) {
-    const x = evt.clientX - state.rotateCenter.x;
-    const y = evt.clientY - state.rotateCenter.y;
-    const d = state.r2d * Math.atan2(y, x);
-    state.rotation = d - state.startAngle;
-  }
-}
-
-const stopRotate = (evt: MouseEvent) => {
-  if (state.tempRotation !== state.rotation) {
-    state.knobDeg += state.rotation;
-    state.rotation = 0;
-  }
-  state.isRotating = false;
-}
+const dragWheel = useObservable(
+  fromEvent(knob, 'mousedown').pipe(
+    map(evt => {
+      const { clientX, clientY } = evt as MouseEvent
+      const rect = knob.value.getBoundingClientRect()
+      const { top, left, height, width } = rect
+      state.rotateCenter = {
+        x: left + width / 2,
+        y: top + height / 2
+      }
+      const x = clientX - state.rotateCenter.x
+      const y = clientY - state.rotateCenter.y
+      state.startAngle = R2D * Math.atan2(y, x)
+      state.tempRotation = state.rotation
+    }),
+    switchMap(
+      start => fromEvent(app, 'mousemove').pipe(
+        map(evt => {
+          evt.preventDefault()
+          const { clientX, clientY } = evt as MouseEvent
+          const x = clientX - state.rotateCenter.x;
+          const y = clientY - state.rotateCenter.y;
+          const d = R2D * Math.atan2(y, x);
+          state.rotation = d - state.startAngle;
+        }),
+        takeUntil(fromEvent(app, 'mouseup').pipe(map(() => {
+          if (state.tempRotation !== state.rotation) {
+            state.knobDeg += state.rotation
+            state.rotation = 0
+          }
+        })))
+      )
+    )
+  )
+)
 
 const addColor = () => {
   state.colors.push(genRandomColor())
 }
 
 const removeColor = (index: number) => {
-  if (state.colors.length > 2) state.colors.splice(index, 1)
+  if (state.colors.length > 2) {
+    state.colors.splice(index, 1)
+  }
 }
 
 const isColorBrighten = (hex: string) => {
@@ -96,7 +109,21 @@ const isColorBrighten = (hex: string) => {
   return hsp > 127.5
 }
 
-const finalAngle = computed(() => ((state.knobDeg + state.rotation) % 360).toFixed())
+const finalAngle = computed(() => {
+  const deg = (state.knobDeg + state.rotation) % 360
+  const positiveDeg = deg < 0 ? 360 + deg : deg
+  return +positiveDeg.toFixed()
+})
+
+watch(
+  paletteResult,
+  (value: string) => {
+    emit('paletteChange', value)
+  },
+  {
+    immediate: true
+  }
+)
 </script>
 
 <style scoped>
@@ -114,53 +141,16 @@ const finalAngle = computed(() => ((state.knobDeg + state.rotation) % 360).toFix
   align-items: center;
   justify-content: center;
 }
-.outer-wheel .inner-wheel {
-  width: 60px;
-  height: 60px;
-  position: relative;
-}
-.outer-wheel .inner-wheel .inner-wheel__knob {
-  box-shadow: inset 4px -4px 10px #1f1f1f;
-  border-radius: 100%;
-  background: #3d3d3d;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.outer-wheel .inner-wheel .inner-wheel__knob span {
-  color: #fafafa;
-  font-size: 1.5rem;
-  offset-rotate: 90deg;
-}
-.outer-wheel .inner-wheel .inner-wheel__knob span::after {
-  content: "°";
-}
-.outer-wheel .inner-wheel .inner-wheel__anchor {
-  box-shadow: inset -4px 0px 8px #ff9f1c;
-  position: absolute;
-  right: calc(50% - 10px);
-  top: 0px;
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid #ffc857;
-}
 .palette {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   margin-top: 1rem;
 }
 .palette label {
   position: relative;
-  padding-top: 4px;
   padding-right: 0;
-  padding-bottom: 4px;
   padding-left: 12px;
-  border: solid 1px #ddd;
   border-radius: 4px;
 }
 .palette label:not(:last-child) {
