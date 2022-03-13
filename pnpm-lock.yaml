@@ -7,6 +7,8 @@ specifiers:
   '@unocss/transformer-directives': ^0.26.2
   '@vitejs/plugin-vue': ^2.2.0
   '@vueuse/core': ^7.6.2
+  '@vueuse/rxjs': ^8.0.0
+  rxjs: ^7.5.5
   typescript: ^4.5.4
   unocss: ^0.26.2
   unplugin-auto-import: ^0.6.1
@@ -18,6 +20,8 @@ specifiers:
 
 dependencies:
   '@vueuse/core': 7.6.2_vue@3.2.31
+  '@vueuse/rxjs': 8.0.0_rxjs@7.5.5+vue@3.2.31
+  rxjs: 7.5.5
   vue: 3.2.31
 
 devDependencies:
@@ -472,8 +476,36 @@ packages:
       vue-demi: 0.12.1_vue@3.2.31
     dev: false
 
+  /@vueuse/rxjs/8.0.0_rxjs@7.5.5+vue@3.2.31:
+    resolution: {integrity: sha512-X8QQbiu1qfxBepvF7ZQ/y1bU0YZLbrvzAkVX1q1Ux2R1AactuxGUGWwgN+VlXV+MFxOb/45ya8aPBhl3THSaPA==}
+    peerDependencies:
+      rxjs: '>=6.0.0'
+    dependencies:
+      '@vueuse/shared': 8.0.0_vue@3.2.31
+      rxjs: 7.5.5
+      vue-demi: 0.12.1_vue@3.2.31
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
+
   /@vueuse/shared/7.6.2_vue@3.2.31:
     resolution: {integrity: sha512-ThDld4Mx501tahRuHV6qJGkwCr17GknZrOzlD02Na9qJcH7Pq0quNTLx5cNDou7b1CKNvE3BXi2w/hz9KuPNTQ==}
+    peerDependencies:
+      '@vue/composition-api': ^1.1.0
+      vue: ^2.6.0 || ^3.2.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      vue:
+        optional: true
+    dependencies:
+      vue: 3.2.31
+      vue-demi: 0.12.1_vue@3.2.31
+    dev: false
+
+  /@vueuse/shared/8.0.0_vue@3.2.31:
+    resolution: {integrity: sha512-HUIFZ5Vc3aGvIzDQJJhg2+Ok5xvNuwxoz5HrOr/M765wlj357WiMYzhU2XGljL6IcmK29SP/1Jb4Fra7A4PBCw==}
     peerDependencies:
       '@vue/composition-api': ^1.1.0
       vue: ^2.6.0 || ^3.2.0
@@ -1410,6 +1442,12 @@ packages:
       queue-microtask: 1.2.3
     dev: true
 
+  /rxjs/7.5.5:
+    resolution: {integrity: sha512-sy+H0pQofO95VDmFLzyaw9xNJU4KTRSwQIGM6+iG3SypAtCiLDzpeG8sJrNCWn2Up9km+KhkvTdbkrdy+yzZdw==}
+    dependencies:
+      tslib: 2.3.1
+    dev: false
+
   /semver/7.3.5:
     resolution: {integrity: sha512-PoeGJYh8HK4BTO/a9Tf6ZG3veo/A7ZVsYrSA6J8ny9nb3B1VrpkuN+z9OE5wfE5p6H4LchYZsegiQgbJD94ZFQ==}
     engines: {node: '>=10'}
@@ -1494,6 +1532,10 @@ packages:
     resolution: {integrity: sha512-eM+pCBxXO/njtF7vdFsHuqb+ElbxqtI4r5EAvk6grfAFyJ6IvWlSkfZ5T9ozC6xWw3Fj1fGoSmrl0gUs46JVIw==}
     engines: {node: '>=6'}
     dev: true
+
+  /tslib/2.3.1:
+    resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
+    dev: false
 
   /type-detect/4.0.8:
     resolution: {integrity: sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==}

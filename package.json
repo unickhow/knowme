@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "@vueuse/core": "^7.6.2",
+    "@vueuse/rxjs": "^8.0.0",
+    "rxjs": "^7.5.5",
     "vue": "^3.2.25"
   },
   "author": {
