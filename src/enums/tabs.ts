@@ -1,4 +1,5 @@
 export enum Tabs {
   stats = 'stats',
-  repo = 'repo'
+  repo = 'repo',
+  lang = 'lang',
 }

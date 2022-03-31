@@ -1,0 +1,80 @@
+<template>
+  <div class="lang-card">
+    <CardBlock title="Exclude Repos" class="">
+      <template #icon>
+        <OcticonRepoDeleted16 class="mr-2 text-[#ff7a00]" />
+      </template>
+      <div
+        v-for="(name, index) in excludeRepos"
+        :key="index"
+        class="flex mb-4">
+        <input v-model="excludeRepos[index]" type="text" class="is-input">
+        <button
+          v-if="excludeRepos.length > 1"
+          class="is-btn p-0 ml-2 w-30px h-30px rounded-full flex items-center justify-center"
+          @click="excludeRepos.splice(index, 1)">
+          <LaTimes />
+        </button>
+      </div>
+      <div class="mt-4">
+        <button v-if="excludeRepos.length < 5" class="is-btn flex items-center" @click="excludeRepos.push('')">
+          <PhPlusDuotone class="mr-2" />
+          <span>Add</span>
+        </button>
+      </div>
+    </CardBlock>
+
+    <MdPreview :apiUrl="assembledApi" />
+
+    <div class="flex items-center justify-center">
+      <button class="is-btn flex items-center mr-4 disabled:pointer-events-none" :disabled="!username" @click="handleGenerate">
+        <mdiCardAccountDetailsStarOutline class="mr-2" />
+        <span>Generate</span>
+      </button>
+      <button class="is-btn flex items-center" @click="handleReset">
+        <fluentArrowReset24Filled class="mr-2" />
+        <span>Reset</span>
+      </button>
+    </div>
+    <div class="my-8 text-center">
+      <img class="max-w-full" :class="{ 'rounded-md': imgSrc.includes('placeholder.com') }" :src="imgSrc" alt="">
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import CardBlock from '../cardBlock.vue'
+import { useThrottleFn } from '@vueuse/core'
+import MdPreview from '../mdPreview.vue'
+import mdiCardAccountDetailsStarOutline from '~icons/mdi/card-account-details-star-outline';
+import fluentArrowReset24Filled from '~icons/fluent/arrow-reset-24-filled';
+import LaTimes from '~icons/la/times'
+import PhPlusDuotone from '~icons/ph/plus-duotone'
+import OcticonRepoDeleted16 from '~icons/octicon/repo-deleted-16'
+
+const username = inject('username', '') as any
+
+const excludeRepos = ref([''])
+
+const allQueries = computed(() => {
+  let str: string[] = [`username=${username.value}`]
+
+  if (excludeRepos.value.length) {
+    str.push(`exclude_repo=${excludeRepos.value.filter(Boolean).join(',')}`)
+  }
+
+  return str.join('&')
+})
+const assembledApi = computed(() => `https://github-readme-stats.vercel.app/api/top-langs/?${allQueries.value}`)
+
+const imgSrc = ref('https://via.placeholder.com/495x195.png?text=check+your+username')
+const handleGenerate = useThrottleFn(() => {
+  if (!username.value) return false
+  imgSrc.value = assembledApi.value
+}, 1000, false)
+
+const emit = defineEmits(['resetUserName'])
+const handleReset = () => {
+  emit('resetUserName')
+}
+</script>
