@@ -24,27 +24,37 @@
       </div>
     </CardBlock>
 
-    <CardBlock title="Hide Langs">
+    <CardBlock title="Languages">
       <template #icon>
-        <CarbonCodeHide class="mr-2 text-[#ff7a00]" />
+        <BxCodeBlock class="mr-2 text-[#ff7a00]" />
       </template>
-      <div
-        v-for="(lang, index) in hideLangs"
-        :key="index"
-        class="flex mb-4">
-        <input v-model="hideLangs[index]" type="text" class="is-input">
-        <button
-          v-if="hideLangs.length > 1"
-          class="is-btn p-0 ml-2 w-30px h-30px rounded-full flex items-center justify-center"
-          @click="hideLangs.splice(index, 1)">
-          <LaTimes />
-        </button>
+      <div class="field mb-4">
+        <h5 class="text-lg m-0 mb-2">Counts</h5>
+        <div class="flex">
+          <input class="counter-range mx-2" type="range" v-model="langsCount" min="1" max="10" step="1">
+          <span>{{ langsCount }}</span>
+        </div>
       </div>
-      <div class="mt-4">
-        <button v-if="hideLangs.length < 5" class="is-btn flex items-center" @click="hideLangs.push('')">
-          <PhPlusDuotone class="mr-2" />
-          <span>Add</span>
-        </button>
+      <div class="field">
+        <h5 class="text-lg m-0 mb-2">Hide</h5>
+        <div
+          v-for="(lang, index) in hideLangs"
+          :key="index"
+          class="flex mb-4">
+          <input v-model="hideLangs[index]" type="text" class="is-input">
+          <button
+            v-if="hideLangs.length > 1"
+            class="is-btn p-0 ml-2 w-30px h-30px rounded-full flex items-center justify-center"
+            @click="hideLangs.splice(index, 1)">
+            <LaTimes />
+          </button>
+        </div>
+        <div class="mt-4">
+          <button v-if="hideLangs.length < 5" class="is-btn flex items-center" @click="hideLangs.push('')">
+            <PhPlusDuotone class="mr-2" />
+            <span>Add</span>
+          </button>
+        </div>
       </div>
     </CardBlock>
 
@@ -75,12 +85,13 @@ import fluentArrowReset24Filled from '~icons/fluent/arrow-reset-24-filled';
 import LaTimes from '~icons/la/times'
 import PhPlusDuotone from '~icons/ph/plus-duotone'
 import OcticonRepoDeleted16 from '~icons/octicon/repo-deleted-16'
-import CarbonCodeHide from '~icons/carbon/code-hide'
+import BxCodeBlock from '~icons/bx/code-block'
 
 const username = inject('username', '') as any
 
 const excludeRepos = ref([''])
 const hideLangs = ref([''])
+const langsCount = ref(5)
 
 const allQueries = computed(() => {
   let str: string[] = [`username=${username.value}`]
@@ -91,6 +102,10 @@ const allQueries = computed(() => {
 
   if (hideLangs.value.length) {
     str.push(`hide=${hideLangs.value.filter(Boolean).join(',')}`)
+  }
+
+  if (langsCount.value) {
+    str.push(`langs_count=${langsCount.value}`)
   }
 
   return str.join('&')
