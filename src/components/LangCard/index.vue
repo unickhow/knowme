@@ -58,6 +58,22 @@
       </div>
     </CardBlock>
 
+    <CardBlock title="Layout">
+      <template #icon>
+        <MdiViewCompact class="mr-2 text-[#ff7a00]" />
+      </template>
+      <div class="flex flex-col">
+        <label class="cursor-pointer mb-2">
+          <input v-model="layoutType" type="radio" name="layout" id="" value="default">
+          <span class="ml-2">Default</span>
+        </label>
+        <label class="cursor-pointer">
+          <input v-model="layoutType" type="radio" name="layout" id="" value="compact">
+          <span class="ml-2">Compact</span>
+        </label>
+      </div>
+    </CardBlock>
+
     <MdPreview :apiUrl="assembledApi" />
 
     <div class="flex items-center justify-center">
@@ -86,12 +102,14 @@ import LaTimes from '~icons/la/times'
 import PhPlusDuotone from '~icons/ph/plus-duotone'
 import OcticonRepoDeleted16 from '~icons/octicon/repo-deleted-16'
 import BxCodeBlock from '~icons/bx/code-block'
+import MdiViewCompact from '~icons/mdi/view-compact'
 
 const username = inject('username', '') as any
 
 const excludeRepos = ref([''])
 const hideLangs = ref([''])
 const langsCount = ref(5)
+const layoutType = ref('default') // compact
 
 const allQueries = computed(() => {
   let str: string[] = [`username=${username.value}`]
@@ -106,6 +124,10 @@ const allQueries = computed(() => {
 
   if (langsCount.value) {
     str.push(`langs_count=${langsCount.value}`)
+  }
+
+  if (layoutType.value !== 'default') {
+    str.push(`layout=${layoutType.value}`)
   }
 
   return str.join('&')
