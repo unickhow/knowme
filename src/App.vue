@@ -19,7 +19,7 @@
         </div>
       </CardBlock>
 
-      <div class="tab-marks sm:absolute sm:rotate-90 -right-[84px] top-80 flex">
+      <div class="tab-marks sm:absolute sm:rotate-90 -right-[115px] top-80 flex">
         <span
           v-for="tabName in tabs"
           class="py-2 px-4 bg-gray-300 opacity-30 rounded-t-md cursor-pointer"
@@ -29,7 +29,7 @@
 
       <StatsCard v-show="tab === 'stats'" @resetUserName="username = ''" />
       <RepoCard v-show="tab === 'repo'" @resetUserName="username = ''" />
-
+      <LangCard v-show="tab === 'lang'" @resetUserName="username = ''" />
       <footer class="text-center">
         <a class="p-1 opacity-50 color-[#1d1d1d] hover:opacity-100 transition-opacity" href="https://github.com/unickhow/knowme" target="_blank">
           <zmdiGithubBox />
@@ -44,6 +44,7 @@ import mdiDrawPen from '~icons/mdi/draw-pen';
 import zmdiGithubBox from '~icons/zmdi/github-box';
 import CardBlock from './components/cardBlock.vue';
 import StatsCard from './components/StatsCard/index.vue';
+import LangCard from './components/LangCard/index.vue';
 import RepoCard from './components/RepoCard/index.vue';
 import { Tabs } from './enums/tabs';
 
