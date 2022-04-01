@@ -1,6 +1,6 @@
 <template>
   <div class="lang-card">
-    <CardBlock title="Exclude Repos" class="">
+    <CardBlock title="Exclude Repos">
       <template #icon>
         <OcticonRepoDeleted16 class="mr-2 text-[#ff7a00]" />
       </template>
@@ -18,6 +18,30 @@
       </div>
       <div class="mt-4">
         <button v-if="excludeRepos.length < 5" class="is-btn flex items-center" @click="excludeRepos.push('')">
+          <PhPlusDuotone class="mr-2" />
+          <span>Add</span>
+        </button>
+      </div>
+    </CardBlock>
+
+    <CardBlock title="Hide Langs">
+      <template #icon>
+        <CarbonCodeHide class="mr-2 text-[#ff7a00]" />
+      </template>
+      <div
+        v-for="(lang, index) in hideLangs"
+        :key="index"
+        class="flex mb-4">
+        <input v-model="hideLangs[index]" type="text" class="is-input">
+        <button
+          v-if="hideLangs.length > 1"
+          class="is-btn p-0 ml-2 w-30px h-30px rounded-full flex items-center justify-center"
+          @click="hideLangs.splice(index, 1)">
+          <LaTimes />
+        </button>
+      </div>
+      <div class="mt-4">
+        <button v-if="hideLangs.length < 5" class="is-btn flex items-center" @click="hideLangs.push('')">
           <PhPlusDuotone class="mr-2" />
           <span>Add</span>
         </button>
@@ -51,16 +75,22 @@ import fluentArrowReset24Filled from '~icons/fluent/arrow-reset-24-filled';
 import LaTimes from '~icons/la/times'
 import PhPlusDuotone from '~icons/ph/plus-duotone'
 import OcticonRepoDeleted16 from '~icons/octicon/repo-deleted-16'
+import CarbonCodeHide from '~icons/carbon/code-hide'
 
 const username = inject('username', '') as any
 
 const excludeRepos = ref([''])
+const hideLangs = ref([''])
 
 const allQueries = computed(() => {
   let str: string[] = [`username=${username.value}`]
 
   if (excludeRepos.value.length) {
     str.push(`exclude_repo=${excludeRepos.value.filter(Boolean).join(',')}`)
+  }
+
+  if (hideLangs.value.length) {
+    str.push(`hide=${hideLangs.value.filter(Boolean).join(',')}`)
   }
 
   return str.join('&')
