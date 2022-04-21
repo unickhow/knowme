@@ -7,6 +7,6 @@ this project is inspired by awesome [github-readme-stats](https://github.com/anu
 ### Todo
 
 - [x] theme, disable_animations
-- [ ] hide_border, cache_seconds, border_radius, line_height, custom_title
+- [x] hide_border, cache_seconds, border_radius, line_height, custom_title
 - [x] Repo Card
-- [ ] Language Card
+- [x] Language Card
